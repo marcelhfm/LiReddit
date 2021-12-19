@@ -25,6 +25,9 @@ coverage
 # Dependency directory
 node_modules
 bower_components
+.next
+dist
+
 
 # Editors
 .idea
@@ -36,6 +39,8 @@ Thumbs.db
 
 # Ignore built ts files
 dist/**/*
+lireddit-web/dist/**/*
+lireddit-web/.next/**/*
 
 # ignore yarn.lock
 yarn.lock
