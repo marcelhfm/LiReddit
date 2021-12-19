@@ -44,3 +44,23 @@ lireddit-web/.next/**/*
 
 # ignore yarn.lock
 yarn.lock
+
+lireddit-web/.next/build-manifest.json
+lireddit-web/.next/cache/webpack/client-development/3.pack
+lireddit-web/.next/cache/webpack/client-development/4.pack
+lireddit-web/.next/cache/webpack/client-development/5.pack
+lireddit-web/.next/cache/webpack/client-development/index.pack
+lireddit-web/.next/cache/webpack/client-development/index.pack.old
+lireddit-web/.next/cache/webpack/server-development/3.pack
+lireddit-web/.next/cache/webpack/server-development/4.pack
+lireddit-web/.next/cache/webpack/server-development/index.pack
+lireddit-web/.next/cache/webpack/server-development/index.pack.old
+lireddit-web/.next/server/pages-manifest.json
+lireddit-web/.next/server/pages/index.js
+lireddit-web/.next/server/webpack-runtime.js
+lireddit-web/.next/cache/webpack/client-development/2.pack
+lireddit-web/.next/static/chunks/pages/index.js
+lireddit-web/.next/static/chunks/webpack.js
+lireddit-web/.next/static/development/_buildManifest.js
+lireddit-web/.next/static/webpack/webpack.76f49f6866b399d1.hot-update.js
+lireddit-web/.next/trac
