@@ -1,8 +1,6 @@
 import "reflect-metadata";
-import { MikroORM } from "@mikro-orm/core";
 import express from "express";
 import { COOKIE_NAME, __prod__ } from "./constants";
-import mikroConfig from "./mikro-orm.config";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
@@ -12,7 +10,10 @@ import { MyContext } from "./types";
 import session from "express-session";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import cors from "cors";
-const redis = require("redis");
+import Redis from "ioredis";
+import { createConnection } from "typeorm";
+import { Post } from "./entities/Post";
+import { User } from "./entities/User";
 
 declare module "express-session" {
   interface Session {
@@ -22,14 +23,21 @@ declare module "express-session" {
 
 const main = async () => {
   //Database Connection
-  const orm = await MikroORM.init(mikroConfig);
-  await orm.getMigrator().up();
+  const conn = await createConnection({
+    type: "postgres",
+    database: "lireddit2",
+    username: "postgres",
+    password: "postgres",
+    logging: true,
+    synchronize: true,
+    entities: [Post, User],
+  });
 
   //Server
   const app = express();
 
   const RedisStore = require("connect-redis")(session);
-  const redisClient = redis.createClient();
+  const redis = new Redis();
   app.use(cors({ origin: "http://localhost:3000", credentials: true }));
   app.use(
     session({
@@ -37,7 +45,7 @@ const main = async () => {
       store: new RedisStore({
         host: "localhost",
         port: 6379,
-        client: redisClient,
+        client: redis,
         disableTouch: true,
       }),
       saveUninitialized: false,
@@ -58,7 +66,7 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
+    context: ({ req, res }): MyContext => ({ req, res, redis }),
   });
 
   await apolloServer.start();
