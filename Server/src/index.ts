@@ -25,7 +25,7 @@ const main = async () => {
   //Database Connection
   const conn = await createConnection({
     type: "postgres",
-    database: "lireddit2",
+    database: "lireddit",
     username: "postgres",
     password: "postgres",
     logging: true,

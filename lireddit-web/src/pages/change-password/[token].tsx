@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link } from "@chakra-ui/react";
+import { Box, Button, Flex, Link } from "@chakra-ui/core";
 import { Formik, Form } from "formik";
 import { NextPage } from "next";
 import { withUrqlClient } from "next-urql";
@@ -58,7 +58,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
             <Button
               mt={4}
               type="submit"
-              colorScheme="teal"
+              variantColor="teal"
               isLoading={isSubmitting}
             >
               change Password
