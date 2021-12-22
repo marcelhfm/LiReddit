@@ -1,7 +1,10 @@
 import gql from 'graphql-tag';
 import * as Urql from 'urql';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -37,7 +40,7 @@ export type MutationCreatePostArgs = {
 
 
 export type MutationUpdatePostArgs = {
-  title?: Maybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
   id: Scalars['Float'];
 };
 
@@ -93,6 +96,12 @@ export type Query = {
 };
 
 
+export type QueryPostsArgs = {
+  cursor?: InputMaybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
+
 export type QueryPostArgs = {
   id: Scalars['Int'];
 };
@@ -118,26 +127,11 @@ export type UsernamePasswordInput = {
   email: Scalars['String'];
 };
 
-export type RegularErrorFragment = (
-  { __typename?: 'FieldError' }
-  & Pick<FieldError, 'field' | 'message'>
-);
+export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type RegularUserFragment = (
-  { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
-);
+export type RegularUserFragment = { __typename?: 'User', id: number, username: string };
 
-export type RegularUserResponseFragment = (
-  { __typename?: 'UserResponse' }
-  & { errors?: Maybe<Array<(
-    { __typename?: 'FieldError' }
-    & RegularErrorFragment
-  )>>, user?: Maybe<(
-    { __typename?: 'User' }
-    & RegularUserFragment
-  )> }
-);
+export type RegularUserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined };
 
 export type ChangePasswordMutationVariables = Exact<{
   token: Scalars['String'];
@@ -145,36 +139,21 @@ export type ChangePasswordMutationVariables = Exact<{
 }>;
 
 
-export type ChangePasswordMutation = (
-  { __typename?: 'Mutation' }
-  & { changePassword: (
-    { __typename?: 'UserResponse' }
-    & RegularUserResponseFragment
-  ) }
-);
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
 
 export type CreatePostMutationVariables = Exact<{
   input: PostInput;
 }>;
 
 
-export type CreatePostMutation = (
-  { __typename?: 'Mutation' }
-  & { createPost: (
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'points' | 'creatorId'>
-  ) }
-);
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, points: number, creatorId: number } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type ForgotPasswordMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'forgotPassword'>
-);
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: boolean };
 
 export type LoginMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
@@ -182,56 +161,32 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = (
-  { __typename?: 'Mutation' }
-  & { login: (
-    { __typename?: 'UserResponse' }
-    & RegularUserResponseFragment
-  ) }
-);
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LogoutMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'logout'>
-);
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type RegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
 
 
-export type RegisterMutation = (
-  { __typename?: 'Mutation' }
-  & { register: (
-    { __typename?: 'UserResponse' }
-    & RegularUserResponseFragment
-  ) }
-);
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = (
-  { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'User' }
-    & RegularUserFragment
-  )> }
-);
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string } | null | undefined };
 
-export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PostsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type PostsQuery = (
-  { __typename?: 'Query' }
-  & { posts: Array<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
-  )> }
-);
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string }> };
 
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
@@ -336,8 +291,8 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
 export const PostsDocument = gql`
-    query Posts {
-  posts {
+    query Posts($limit: Int!, $cursor: String) {
+  posts(cursor: $cursor, limit: $limit) {
     id
     createdAt
     updatedAt
